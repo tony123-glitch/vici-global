@@ -1,18 +1,91 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "./ui/Button";
 import { ArrowRight, Zap, Phone, BarChart } from "lucide-react";
 
 export function Hero() {
+  const [clicks, setClicks] = useState(0);
+  const [isPulsing, setIsPulsing] = useState(false);
+  const router = useRouter();
+  const MAX_CLICKS = 7;
+
+  const handleNodeClick = () => {
+    const newClicks = Math.min(clicks + 1, MAX_CLICKS);
+    setClicks(newClicks);
+
+    setIsPulsing(true);
+    setTimeout(() => setIsPulsing(false), 800);
+
+    if (newClicks >= MAX_CLICKS) {
+      setTimeout(() => {
+        router.push("/secret-discount");
+      }, 1000);
+    }
+  };
+
+  const peakScale = (clicks / MAX_CLICKS) * 2;
+  const currentScale = isPulsing ? peakScale : 0;
+  const currentOpacity = isPulsing ? 0.6 : 0;
+
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+      {/* Horizontally Centered Floating Pill */}
+      <div className="absolute top-28 md:top-32 left-1/2 -translate-x-1/2 z-20 w-full flex justify-center px-4">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-panel border border-white/5 text-sm font-medium text-electric shadow-[0_0_20px_rgba(0,194,255,0.15)]"
+        >
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-electric opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-electric"></span>
+          </span>
+          Only accepting 3 new clients this quarter
+        </motion.div>
+      </div>
+
+      {/* Dynamic Light Blue Flare Blooms */}
+      <div className="fixed inset-0 pointer-events-none z-[100] overflow-hidden mix-blend-screen">
+        <div 
+          className="absolute top-0 left-0 w-[50vw] h-[50vh] bg-[radial-gradient(ellipse_at_top_left,rgba(0,194,255,1)_0%,rgba(0,194,255,0.4)_40%,transparent_70%)] transition-all duration-1000 ease-in-out origin-top-left"
+          style={{ transform: `scale(${currentScale})`, opacity: currentOpacity }}
+        />
+        <div 
+          className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-[radial-gradient(ellipse_at_top_right,rgba(0,194,255,1)_0%,rgba(0,194,255,0.4)_40%,transparent_70%)] transition-all duration-1000 ease-in-out origin-top-right"
+          style={{ transform: `scale(${currentScale})`, opacity: currentOpacity }}
+        />
+        <div 
+          className="absolute bottom-0 left-0 w-[50vw] h-[50vh] bg-[radial-gradient(ellipse_at_bottom_left,rgba(0,194,255,1)_0%,rgba(0,194,255,0.4)_40%,transparent_70%)] transition-all duration-1000 ease-in-out origin-bottom-left"
+          style={{ transform: `scale(${currentScale})`, opacity: currentOpacity }}
+        />
+        <div 
+          className="absolute bottom-0 right-0 w-[50vw] h-[50vh] bg-[radial-gradient(ellipse_at_bottom_right,rgba(0,194,255,1)_0%,rgba(0,194,255,0.4)_40%,transparent_70%)] transition-all duration-1000 ease-in-out origin-bottom-right"
+          style={{ transform: `scale(${currentScale})`, opacity: currentOpacity }}
+        />
+      </div>
+
+      {/* Screen flash on fully overtake */}
+      <AnimatePresence>
+        {clicks >= MAX_CLICKS && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="fixed inset-0 bg-white z-[200] pointer-events-none mix-blend-screen"
+            transition={{ duration: 1 }}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Background Glows */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-electric/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-orange/5 rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center z-10 w-full">
+      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center z-10 w-full mt-4">
         
         {/* Left Content */}
         <motion.div 
@@ -21,14 +94,6 @@ export function Hero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="flex flex-col gap-8"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-panel border border-white/5 text-xs font-medium text-electric w-fit mb-4">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-electric opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-electric"></span>
-            </span>
-            Only accepting 3 new clients this quarter
-          </div>
-
           <h1 className="text-5xl md:text-7xl font-bold leading-[1.1] tracking-tight text-white">
             Your Business Should Never Miss <span className="text-transparent bg-clip-text bg-gradient-to-r from-electric to-orange text-glow">Another Lead</span>
           </h1>
@@ -90,13 +155,31 @@ export function Hero() {
           <div className="absolute inset-x-0 top-1/3 h-[1px] bg-gradient-to-r from-transparent via-electric/20 to-transparent -rotate-45 transform origin-center" />
 
           {/* Central AI Node */}
-          <div className="relative z-10 w-40 h-40 flex items-center justify-center rounded-full border border-electric/40 bg-black/60 backdrop-blur-md shadow-[0_0_80px_rgba(0,194,255,0.3)]">
-            <div className="absolute inset-0 rounded-full border border-orange/20 animate-[ping_3s_ease-in-out_infinite]" />
-            <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-electric/80 via-electric/20 to-transparent flex items-center justify-center animate-[spin_4s_linear_infinite]">
+          <div 
+            onClick={handleNodeClick}
+            className={`relative z-10 w-44 h-44 flex items-center justify-center rounded-full border border-electric/40 bg-black/60 backdrop-blur-md shadow-[0_0_80px_rgba(0,194,255,0.3)] transition-all duration-300 ${isPulsing ? 'scale-90 brightness-150' : ''}`}
+          >
+            <div className={`absolute inset-0 rounded-full border border-orange/40 ${isPulsing ? 'animate-ping' : 'animate-[ping_3s_ease-in-out_infinite]'}`} />
+            
+            {/* Added details around node */}
+            <div className="absolute inset-[-20px] rounded-full border border-dashed border-electric/20 animate-[spin_10s_linear_infinite]" />
+            <div className="absolute inset-[-40px] rounded-full border-t border-r border-electric/10 animate-[spin_15s_linear_infinite_reverse]" />
+
+            <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-electric/90 via-electric/30 to-transparent flex items-center justify-center animate-[spin_4s_linear_infinite]">
               <div className="absolute inset-1 rounded-full bg-[#0a0f14] flex items-center justify-center animate-[spin_4s_linear_infinite_reverse]">
-                 <Zap className="w-8 h-8 text-electric" />
+                 <Zap className={`w-10 h-10 text-electric transition-transform ${isPulsing ? 'scale-125' : ''}`} />
               </div>
             </div>
+            
+            {/* Click Count Energy Rings */}
+            {Array.from({ length: clicks }).map((_, i) => (
+              <motion.div 
+                key={i}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1 + i * 0.15, opacity: 0.8 - i * 0.1 }}
+                className="absolute inset-0 rounded-full border border-electric/50 pointer-events-none"
+              />
+            ))}
           </div>
           
           {/* Floating Data Pulses */}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
   return (
@@ -6,7 +7,13 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
         
         <div className="flex items-center gap-2">
-          <span className="font-bold text-lg tracking-tight text-white/50">VICI GLOBAL</span>
+          <Image 
+            src="/logo.png"
+            alt="Vici Global Logo"
+            width={150}
+            height={50}
+            className="h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+          />
         </div>
 
         <div className="flex items-center gap-6 text-sm text-white/50">

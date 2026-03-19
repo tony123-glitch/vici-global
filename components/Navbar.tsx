@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "./ui/Button";
 
 export function Navbar() {
@@ -12,10 +13,16 @@ export function Navbar() {
       className="fixed top-0 w-full z-50 border-b border-white/5 bg-background/80 backdrop-blur-md"
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="font-bold text-xl tracking-tight text-white">VICI GLOBAL</span>
-          <div className="w-2 h-2 rounded-full bg-electric animate-glow" />
-        </div>
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <Image 
+            src="/logo.png"
+            alt="Vici Global Logo"
+            width={270}
+            height={90}
+            className="h-20 w-auto object-contain"
+            priority
+          />
+        </Link>
         
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted">
           <Link href="#system" className="hover:text-white transition-colors">System</Link>

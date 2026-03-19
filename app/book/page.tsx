@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { CheckCircle2 } from "lucide-react";
 import { BookingForm } from "../../components/BookingForm";
 
@@ -16,8 +17,14 @@ export default function BookPage() {
       {/* Minimal Header */}
       <header className="absolute top-0 w-full z-50 p-6 flex justify-center md:justify-start">
         <Link href="/" className="inline-flex items-center gap-2">
-          <span className="font-bold text-xl tracking-tight text-white">VICI GLOBAL</span>
-          <div className="w-2 h-2 rounded-full bg-electric animate-glow" />
+          <Image 
+            src="/logo.png"
+            alt="Vici Global Logo"
+            width={270}
+            height={90}
+            className="h-20 w-auto object-contain"
+            priority
+          />
         </Link>
       </header>
 
