@@ -33,22 +33,6 @@ export function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-      {/* Horizontally Centered Floating Pill */}
-      <div className="absolute top-28 md:top-32 left-1/2 -translate-x-1/2 z-20 w-full flex justify-center px-4">
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-panel border border-white/5 text-sm font-medium text-electric shadow-[0_0_20px_rgba(0,194,255,0.15)]"
-        >
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-electric opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-electric"></span>
-          </span>
-          Only accepting 3 new clients this quarter
-        </motion.div>
-      </div>
-
       {/* Dynamic Light Blue Flare Blooms */}
       <div className="fixed inset-0 pointer-events-none z-[100] overflow-hidden mix-blend-screen">
         <div 
@@ -123,15 +107,25 @@ export function Hero() {
             ))}
           </ul>
 
-          <div className="flex flex-col sm:flex-row gap-4 mt-6">
+          <div className="flex items-center gap-2 mt-6 mb-3 ml-1 text-sm font-medium text-electric">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-electric opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-electric"></span>
+            </span>
+            Only accepting 3 new clients this quarter
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4">
             <Link href="/book" className="w-full sm:w-auto">
               <Button size="lg" className="w-full gap-2">
                 Book a Call <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
-            <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-              See How It Works
-            </Button>
+            <Link href="/process" className="w-full sm:w-auto">
+              <Button variant="secondary" size="lg" className="w-full">
+                See How It Works
+              </Button>
+            </Link>
           </div>
         </motion.div>
 

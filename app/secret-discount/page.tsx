@@ -82,12 +82,12 @@ export default function SecretDiscountPage() {
                 </div>
                 
                 <ul className="space-y-3 mb-8">
-                  {["Everything in AI Agent", "Custom Meta Ads Architecture", "High-Converting Landers", "Guaranteed Lead Flow"].map((feat, i) => (
+                  {["Everything in AI Agent", "Custom Meta Ads Architecture", "High-Converting Landers", "Automated Direct Calendar Bookings"].map((feat, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm text-white/80"><Check className="w-4 h-4 text-electric" /> {feat}</li>
                   ))}
                 </ul>
 
-                <Link href="/book"><Button className="w-full shadow-[0_0_20px_rgba(0,194,255,0.3)]">Claim VIP Rate <Sparkles className="w-4 h-4 ml-2" /></Button></Link>
+                <Link href="/book?service=Complete Growth Infrastructure"><Button className="w-full shadow-[0_0_20px_rgba(0,194,255,0.3)]">Claim VIP Rate <Sparkles className="w-4 h-4 ml-2" /></Button></Link>
               </div>
 
               {/* Option 2: AI Agent Only */}
@@ -109,12 +109,12 @@ export default function SecretDiscountPage() {
                 </div>
                 
                 <ul className="space-y-3 mb-8">
-                  {["Custom AI Voice & Text Agent", "CRM Integration", "Instant <60s Lead Outreach", "Dedicated Support Channel"].map((feat, i) => (
+                  {["Custom AI Voice & Text Agent", "Instant <60s Lead Outreach", "Automated Direct Calendar Bookings", "Dedicated Support Channel"].map((feat, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm text-white/80"><Check className="w-4 h-4 text-electric opacity-50" /> {feat}</li>
                   ))}
                 </ul>
 
-                <Link href="/book"><Button variant="outline" className="w-full">Select Plan</Button></Link>
+                <Link href="/book?service=AI Agent Only"><Button variant="outline" className="w-full">Select Plan</Button></Link>
               </div>
             </div>
           </motion.div>

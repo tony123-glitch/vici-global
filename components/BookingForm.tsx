@@ -1,15 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/Button";
 
 export function BookingForm() {
+  const searchParams = useSearchParams();
+  const initialService = searchParams.get("service") || "";
+
   const [isQualified, setIsQualified] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     businessType: "",
     revenue: "",
+    serviceOfInterest: initialService,
     problem: ""
   });
 
@@ -74,6 +79,20 @@ export function BookingForm() {
                   <option value="$10k - $50k/mo">$10k - $50k/mo</option>
                   <option value="$50k - $100k/mo">$50k - $100k/mo</option>
                   <option value="$100k+/mo">$100k+/mo</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-white/80">Option of Interest</label>
+                <select 
+                  required
+                  className="w-full bg-panel border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-electric transition-colors appearance-none"
+                  value={formData.serviceOfInterest}
+                  onChange={e => setFormData({...formData, serviceOfInterest: e.target.value})}
+                >
+                  <option value="" disabled>Select an option</option>
+                  <option value="AI Agent Only">AI Agent Only</option>
+                  <option value="Complete Growth Infrastructure">Complete Growth Infrastructure</option>
                 </select>
               </div>
 

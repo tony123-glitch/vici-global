@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0a0f14;
+  --color-background: #05050a;
   --color-foreground: #ffffff;
-  --color-panel: #121a22;
-  --color-electric: #00c2ff;
-  --color-orange: #ff7a18;
+  --color-panel: #0a0812;
+  --color-electric: #00e5ff;
+  --color-orange: #b52bff;
   --color-muted: #9aa4af;
 
   --animate-glow: glow 2s ease-in-out infinite alternate;
@@ -13,14 +13,14 @@
 
 @layer base {
   :root {
-    --background: #0a0f14;
+    --background: #05050a;
     --foreground: #ffffff;
   }
 }
 
 @layer utilities {
   .text-glow {
-    text-shadow: 0 0 10px rgba(0, 194, 255, 0.5), 0 0 20px rgba(0, 194, 255, 0.3);
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5), 0 0 20px rgba(181, 43, 255, 0.3);
   }
 }
 
@@ -33,9 +33,9 @@ body {
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 10px rgba(0, 194, 255, 0.2), 0 0 20px rgba(0, 194, 255, 0.1);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.2), 0 0 20px rgba(181, 43, 255, 0.1);
   }
   to {
-    box-shadow: 0 0 20px rgba(0, 194, 255, 0.4), 0 0 30px rgba(0, 194, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.4), 0 0 30px rgba(181, 43, 255, 0.3);
   }
 }

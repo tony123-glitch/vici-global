@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Suspense } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { BookingForm } from "../../components/BookingForm";
 
@@ -68,7 +69,9 @@ export default function BookPage() {
 
           {/* Right Column: Interactive Booking Flow */}
           <div className="w-full">
-            <BookingForm />
+            <Suspense fallback={<div className="min-h-[550px] bg-panel/50 border border-white/5 rounded-3xl animate-pulse flex items-center justify-center text-muted">Loading form...</div>}>
+              <BookingForm />
+            </Suspense>
           </div>
 
         </div>
