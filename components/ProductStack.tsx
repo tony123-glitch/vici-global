@@ -44,7 +44,7 @@ export function ProductStack() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 flex-wrap justify-center">
+        <div className="flex flex-wrap justify-center gap-6">
           {products.map((p, i) => (
             <motion.div
               key={i}
@@ -53,7 +53,7 @@ export function ProductStack() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -5 }}
-              className="group relative bg-[#0a0f14] border border-white/10 rounded-2xl p-8 hover:border-electric/50 transition-colors duration-300"
+              className="group relative bg-[#0a0f14] border border-white/10 rounded-2xl p-8 hover:border-electric/50 transition-colors duration-300 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-electric/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none" />
               

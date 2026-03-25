@@ -36,10 +36,18 @@ export function Pricing() {
 
             <div className="mb-6 pb-6 border-b border-white/10">
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-bold text-white">$2,000</span>
+                <span className="text-5xl font-extrabold text-white tracking-tight">$2,500</span>
+                <span className="text-lg text-electric font-medium">Setup Build Fee</span>
+              </div>
+              <div className="mt-2 mb-6">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-electric/10 text-electric border border-electric/20">
+                  First 90 Days
+                </span>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold text-white/80">$2,000</span>
                 <span className="text-muted">/month</span>
               </div>
-              <p className="text-sm text-orange mt-2">+$2,500 Setup Build Fee (First 90 Days)</p>
             </div>
 
             <ul className="space-y-4 mb-8 flex-1">
@@ -77,10 +85,18 @@ export function Pricing() {
 
             <div className="mb-6 pb-6 border-b border-white/10">
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-bold text-white">$1,000</span>
+                <span className="text-5xl font-extrabold text-white tracking-tight">$1,000</span>
+                <span className="text-lg text-white/80 font-medium whitespace-nowrap">Setup Build Fee</span>
+              </div>
+              <div className="mt-2 mb-6">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/5 text-white/60 border border-white/10">
+                  First 90 Days
+                </span>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold text-white/80">$1,000</span>
                 <span className="text-muted">/month</span>
               </div>
-              <p className="text-sm text-electric mt-2">+$1,000 Setup Build Fee (First 90 Days)</p>
             </div>
 
 
