@@ -79,20 +79,7 @@ export function Hero() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    // Enforce rotation constantly to guarantee it "always rotates no matter what"
-    const interval = setInterval(() => {
-      if (globeRef.current) {
-        const controls = globeRef.current.controls();
-        if (controls) {
-          controls.autoRotate = true;
-          controls.autoRotateSpeed = 1.0; // Smoother, slightly faster speed
-          controls.enableZoom = false;
-        }
-      }
-    }, 500);
-    return () => clearInterval(interval);
-  }, []);
+
 
   // Tiny glowing data points mapping major tech hubs in brand colors (Blue/Purple)
   const globeMarkers = [
@@ -172,7 +159,7 @@ export function Hero() {
              <div className="absolute bottom-[30%] left-[10%] w-1 h-1 rounded-full bg-[#00c2ff] shadow-[0_0_10px_#00c2ff] animate-[pulse_6s_ease-in-out_infinite]" />
           </div>
 
-          <div className="relative w-[110%] h-[110%] sm:w-[100%] sm:h-[100%] flex items-center justify-center pointer-events-none transform -rotate-[15deg] scale-110">
+          <div className="relative w-[110%] h-[110%] sm:w-[100%] sm:h-[100%] flex items-center justify-center transform -rotate-[15deg] scale-110 cursor-grab active:cursor-grabbing">
             <Globe
               ref={globeRef}
               width={Math.min(dimensions.width, 700)}
