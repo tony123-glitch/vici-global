@@ -47,6 +47,7 @@ export function BookingForm() {
                 <input 
                   required
                   type="text" 
+                  suppressHydrationWarning
                   className="w-full bg-panel border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-electric transition-colors"
                   placeholder="John Doe"
                   value={formData.name}
@@ -59,6 +60,7 @@ export function BookingForm() {
                 <input 
                   required
                   type="text" 
+                  suppressHydrationWarning
                   className="w-full bg-panel border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-electric transition-colors"
                   placeholder="e.g. Real Estate Agency, HVAC Contractor"
                   value={formData.businessType}
@@ -70,6 +72,7 @@ export function BookingForm() {
                 <label className="text-sm font-medium text-white/80">Monthly Revenue</label>
                 <select 
                   required
+                  suppressHydrationWarning
                   className="w-full bg-panel border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-electric transition-colors appearance-none"
                   value={formData.revenue}
                   onChange={e => setFormData({...formData, revenue: e.target.value})}
@@ -86,6 +89,7 @@ export function BookingForm() {
                 <label className="text-sm font-medium text-white/80">Option of Interest</label>
                 <select 
                   required
+                  suppressHydrationWarning
                   className="w-full bg-panel border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-electric transition-colors appearance-none"
                   value={formData.serviceOfInterest}
                   onChange={e => setFormData({...formData, serviceOfInterest: e.target.value})}
@@ -100,6 +104,7 @@ export function BookingForm() {
                 <label className="text-sm font-medium text-white/80">Biggest Problem Right Now</label>
                 <textarea 
                   required
+                  suppressHydrationWarning
                   className="w-full bg-panel border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-electric transition-colors min-h-[100px] resize-none"
                   placeholder="e.g. Generating quality leads, following up fast enough..."
                   value={formData.problem}
@@ -107,8 +112,8 @@ export function BookingForm() {
                 />
               </div>
 
-              <div className="mt-auto pt-4">
-                <Button type="submit" variant="primary" size="lg" className="w-full shadow-[0_0_20px_rgba(0,194,255,0.3)]">
+              <div className="mt-auto pt-4" suppressHydrationWarning>
+                <Button type="submit" variant="primary" size="lg" className="w-full shadow-[0_0_20px_rgba(0,194,255,0.3)]" suppressHydrationWarning>
                   Continue to Calendar
                 </Button>
               </div>

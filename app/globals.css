@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #05050a;
+  --color-background: #030303;
   --color-foreground: #ffffff;
   --color-panel: #0a0812;
   --color-electric: #00e5ff;
@@ -13,7 +13,7 @@
 
 @layer base {
   :root {
-    --background: #05050a;
+    --background: #030303;
     --foreground: #ffffff;
   }
 }

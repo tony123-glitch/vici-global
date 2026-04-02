@@ -1,116 +1,104 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { XCircle, CheckCircle2 } from "lucide-react";
+import { XCircle, CheckCircle2, TrendingDown, TrendingUp, AlertTriangle, ShieldCheck } from "lucide-react";
 
 export function ProblemSolution() {
   const problems = [
-    "Missed calls = lost revenue",
-    "Slow follow-up kills deals",
-    "Leads go cold instantly",
-    "Manual systems don't scale"
+    { title: "Lost Revenue", desc: "Missed calls and slow follow-ups burn leads immediately.", icon: TrendingDown },
+    { title: "Manual Bottlenecks", desc: "Sales teams waste hours on unqualified prospects.", icon: AlertTriangle },
+    { title: "Friction", desc: "Leads go cold waiting for responses or complicated setups.", icon: XCircle }
   ];
 
   const solutions = [
-    "AI responds instantly, every time",
-    "Qualifies leads automatically",
-    "Books appointments for you",
-    "Runs 24/7 without fail or fatigue"
+    { title: "Instant AI Response", desc: "Engages and answers prospects 24/7 without fail.", icon: ShieldCheck },
+    { title: "Automated Qualification", desc: "Pre-vets leads so your team only talks to buyers.", icon: TrendingUp },
+    { title: "Frictionless Booking", desc: "Books appointments directly into your calendar.", icon: CheckCircle2 }
   ];
 
   return (
-    <section className="py-32 relative">
-      <div className="max-w-7xl mx-auto px-6 text-center mb-20">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4">
-          Replace <span className="text-red-500">Chaos</span> with <span className="text-electric">Control</span>
-        </h2>
-      </div>
+    <section className="py-32 relative bg-[#030303]">
+      {/* Background Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[50%] bg-[radial-gradient(ellipse,rgba(79,70,229,0.06)_0%,transparent_60%)] pointer-events-none blur-[100px]" />
 
-      <div className="max-w-[90rem] mx-auto px-8 grid md:grid-cols-2 gap-16 lg:gap-32 xl:gap-40 relative">
-        
-        {/* VS Badge (Street Fighter Style) */}
-        <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 items-center justify-center pointer-events-none">
-          <div className="relative transform -rotate-12 hover:-rotate-6 transition-transform duration-500">
-            {/* Massive intense glow */}
-            <div className="absolute inset-0 bg-electric blur-[50px] opacity-40 rounded-full" />
-            <div className="absolute inset-0 bg-blue-500 blur-[30px] opacity-40 rounded-full mix-blend-screen" />
-            
-            {/* Outer border gradient wrapper */}
-            <div className="relative bg-gradient-to-br from-cyan-300 via-electric to-blue-600 p-1 rounded-2xl shadow-[0_0_40px_rgba(0,194,255,0.4)]">
-              {/* Inner dark base */}
-              <div className="bg-[#05080a] px-5 py-2 rounded-xl flex items-center justify-center relative overflow-hidden border border-electric/20">
-                
-                {/* Internal glow top-down */}
-                <div className="absolute inset-0 bg-gradient-to-b from-electric/20 to-transparent pointer-events-none" />
-
-                {/* Typography styling */}
-                <span 
-                  className="relative z-10 text-5xl md:text-6xl font-black italic tracking-tighter pr-4 pb-1 text-transparent bg-clip-text bg-gradient-to-b from-white via-cyan-100 to-electric drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-                  style={{
-                    WebkitTextStroke: "1px rgba(0,194,255,0.5)"
-                  }}
-                >
-                  VS
-                </span>
-              </div>
-            </div>
-          </div>
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="text-center mb-24">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6"
+          >
+            Stop losing deals to <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">friction.</span> <br className="hidden md:block" />
+            Start scaling with <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00c2ff] to-[#a855f7]">AI automation.</span>
+          </motion.h2>
+          <p className="text-[#8b9bb4] text-xl max-w-3xl mx-auto font-light">
+            Traditional acquisition models are broken. We replace chaotic human bottlenecks with unified, highly intelligent systems.
+          </p>
         </div>
 
-        {/* Pain Points */}
-        <motion.div 
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className="relative bg-panel/30 border border-white/5 rounded-3xl p-8 lg:p-12 overflow-hidden backdrop-blur-sm"
-        >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 blur-[100px] pointer-events-none" />
-          
-          <div className="mb-10 relative z-10">
-            <h3 className="text-3xl font-bold text-white mb-3">The Old Way</h3>
-            <p className="text-muted text-lg">Relying on human effort and fractured tools.</p>
+        <div className="grid lg:grid-cols-2 gap-8 items-stretch relative">
+          {/* Vs badge */}
+          <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-[#030303] border border-[#3b82f6]/30 rounded-full items-center justify-center z-20 shadow-[0_0_30px_rgba(79,70,229,0.2)]">
+            <span className="font-black text-xl italic text-transparent bg-clip-text bg-gradient-to-b from-[#00c2ff] to-[#4f46e5]">VS</span>
           </div>
-          
-          <ul className="space-y-6 relative z-10">
-            {problems.map((prob, i) => (
-              <li key={i} className="flex items-start gap-4">
-                <div className="mt-1 flex-shrink-0 bg-red-500/10 p-1.5 rounded-full">
-                  <XCircle className="w-5 h-5 text-red-500" />
+
+          {/* Problem Column */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative bg-[#08080c] border border-white/5 rounded-3xl p-8 md:p-12 overflow-hidden flex flex-col justify-center"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 blur-[80px] pointer-events-none" />
+            <h3 className="text-2xl font-bold text-white mb-8 border-b border-white/5 pb-6">The Old Way</h3>
+            
+            <div className="space-y-8 relative z-10">
+              {problems.map((prob, i) => (
+                <div key={i} className="flex gap-5 opacity-70 hover:opacity-100 transition-opacity">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                    <prob.icon className="w-5 h-5 text-red-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-white/90 mb-1">{prob.title}</h4>
+                    <p className="text-muted leading-relaxed text-sm md:text-base">{prob.desc}</p>
+                  </div>
                 </div>
-                <span className="text-lg text-white/70 leading-relaxed max-w-sm">{prob}</span>
-              </li>
-            ))}
-          </ul>
-        </motion.div>
+              ))}
+            </div>
+          </motion.div>
 
-        {/* AI Solution */}
-        <motion.div 
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className="relative bg-gradient-to-br from-electric/10 to-transparent border border-electric/30 rounded-3xl p-8 lg:p-12 overflow-hidden backdrop-blur-sm shadow-[0_0_40px_rgba(0,194,255,0.1)] hover:border-electric/50 transition-colors duration-500"
-        >
-           {/* Glow effect */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-electric/20 blur-[100px] pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-electric/50 to-transparent" />
+          {/* Solution Column */}
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative bg-gradient-to-b from-[#0a0a14] to-[#05050a] border border-[#4f46e5]/30 rounded-3xl p-8 md:p-12 overflow-hidden shadow-[0_0_50px_rgba(79,70,229,0.1)] flex flex-col justify-center"
+          >
+            {/* Inner Glows */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#00c2ff]/10 blur-[80px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#a855f7]/10 blur-[80px] pointer-events-none" />
 
-          <div className="mb-10 relative z-10">
-            <h3 className="text-3xl font-bold text-white mb-3">The Vici Way</h3>
-            <p className="text-electric text-lg font-medium">A unified AI growth infrastructure.</p>
-          </div>
-          
-          <ul className="space-y-6 relative z-10">
-            {solutions.map((sol, i) => (
-              <li key={i} className="flex items-start gap-4">
-                <div className="mt-1 flex-shrink-0 bg-electric/10 p-1.5 rounded-full shadow-[0_0_15px_rgba(0,194,255,0.3)]">
-                  <CheckCircle2 className="w-5 h-5 text-electric" />
+            {/* Glowing Top Edge */}
+            <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[#00c2ff] to-transparent opacity-50" />
+
+            <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 mb-8 border-b border-white/10 pb-6">The Vici Way</h3>
+            
+            <div className="space-y-8 relative z-10">
+              {solutions.map((sol, i) => (
+                <div key={i} className="flex gap-5 group">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-[#00c2ff]/20 to-[#4f46e5]/20 border border-[#00c2ff]/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_0_20px_rgba(79,70,229,0.2)]">
+                    <sol.icon className="w-5 h-5 text-[#00c2ff]" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-white mb-1 group-hover:text-[#00c2ff] transition-colors">{sol.title}</h4>
+                    <p className="text-muted leading-relaxed text-sm md:text-base">{sol.desc}</p>
+                  </div>
                 </div>
-                <span className="text-lg text-white leading-relaxed font-medium max-w-sm">{sol}</span>
-              </li>
-            ))}
-          </ul>
-        </motion.div>
-
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

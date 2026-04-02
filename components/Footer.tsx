@@ -4,7 +4,7 @@ import { Facebook, Instagram, Mail } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-[#05080a] border-t border-white/5 pt-24 pb-12">
+    <footer className="bg-[#030303] border-t border-white/5 pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-6">
         
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 mb-16">
@@ -26,13 +26,13 @@ export function Footer() {
             
             {/* Socials */}
             <div className="flex items-center gap-4">
-              <Link href="https://www.facebook.com/profile.php?id=61578469441820" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-electric/10 hover:text-electric hover:border-electric/30 border border-transparent transition-all">
+              <Link href="https://www.facebook.com/profile.php?id=61578469441820" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-[#00c2ff]/10 hover:text-[#00c2ff] hover:border-[#00c2ff]/30 border border-transparent transition-all">
                 <Facebook className="w-4 h-4" />
               </Link>
-              <Link href="https://www.instagram.com/vici_global1/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-electric/10 hover:text-electric hover:border-electric/30 border border-transparent transition-all">
+              <Link href="https://www.instagram.com/vici_global1/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-[#00c2ff]/10 hover:text-[#00c2ff] hover:border-[#00c2ff]/30 border border-transparent transition-all">
                 <Instagram className="w-4 h-4" />
               </Link>
-              <Link href="mailto:info@vici-global.com" aria-label="Email" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-electric/10 hover:text-electric hover:border-electric/30 border border-transparent transition-all">
+              <Link href="mailto:info@vici-global.com" aria-label="Email" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-[#00c2ff]/10 hover:text-[#00c2ff] hover:border-[#00c2ff]/30 border border-transparent transition-all">
                 <Mail className="w-4 h-4" />
               </Link>
             </div>
@@ -89,7 +89,7 @@ export function Footer() {
             © {new Date().getFullYear()} Vici Global. All rights reserved.
           </p>
           <p className="text-sm text-white/30 flex items-center gap-1">
-            Engineered for <span className="text-electric font-medium">Performance</span>
+            Engineered for <span className="text-[#00c2ff] font-medium">Performance</span>
           </p>
         </div>
 

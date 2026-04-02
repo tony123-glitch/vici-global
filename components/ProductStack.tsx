@@ -1,50 +1,64 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, Cpu, Calendar, PhoneIncoming, Layers } from "lucide-react";
+import { Search, Cpu, Calendar, PhoneIncoming, Layers, Zap } from "lucide-react";
 
 const products = [
   {
-    title: "AI Lead Gen Engine",
-    description: "Multi-channel Meta campaigns driven by predictive AI models. Lowers CPL while raising intent.",
+    title: "AI Lead Generation",
+    description: "Launch highly targeted Meta & LinkedIn campaigns powered by predictive AI. Higher intent, lower CPL.",
     icon: Search
   },
   {
-    title: "Smart Qualification",
-    description: "Dynamic conversational forms that weed out unqualified prospects before they enter your CRM.",
+    title: "Qualification Engine",
+    description: "Conversational intake forms that instantly weed out time-wasters. Keep your pipeline incredibly clean.",
     icon: Cpu
   },
   {
-    title: "AI Appointment Setter",
-    description: "Engages leads over SMS/Email within 60 seconds, using natural language to overcome objections.",
+    title: "Appointment Setting",
+    description: "Multi-channel SMS and Email outreach within 60 seconds of opt-in. Overcomes objections in natural language.",
     icon: Calendar
   },
   {
-    title: "24/7 Voice AI",
-    description: "An AI voice agent that answers inbound calls, qualifies the caller, and books them on your calendar.",
+    title: "24/7 Voice Agents",
+    description: "Custom-trained voice AI that answers calls, qualifies criteria, and books calendars—sounding perfectly human.",
     icon: PhoneIncoming
   },
   {
-    title: "CRM Automation",
-    description: "Seamless bi-directional sync with GoHighLevel, HubSpot, or Salesforce. No manual data entry.",
+    title: "CRM Sync & Routing",
+    description: "Zero manual data entry. Everything routes perfectly into GoHighLevel, HubSpot, or Salesforce.",
     icon: Layers
+  },
+  {
+    title: "Performance Analytics",
+    description: "Real-time visibility into your entire acquisition funnel. See exactly which AI interactions drive revenue.",
+    icon: Zap
   }
 ];
 
 export function ProductStack() {
   return (
-    <section id="features" className="py-32 relative bg-panel/30 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-20">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            The Complete <span className="text-electric">Product Stack</span>
-          </h2>
-          <p className="text-muted text-lg max-w-2xl mx-auto">
-            Everything you need to automate your frontend acquisition, built into one cohesive infrastructure.
+    <section id="services" className="py-32 relative bg-[#030303] overflow-hidden">
+      {/* Background Ambient Network Glow */}
+      <div className="absolute top-0 right-[-10%] w-[50%] h-[50%] bg-[radial-gradient(circle,rgba(0,194,255,0.05)_0%,transparent_70%)] blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-[-10%] w-[50%] h-[50%] bg-[radial-gradient(circle,rgba(168,85,247,0.05)_0%,transparent_70%)] blur-[120px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="text-center mb-24">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6"
+          >
+            A Complete <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00c2ff] to-[#4f46e5]">Automation Engine</span>
+          </motion.h2>
+          <p className="text-[#8b9bb4] text-xl max-w-2xl mx-auto font-light">
+            We don't just supply software. We build and integrate custom infrastructure that handles the entire frontend of your business.
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((p, i) => (
             <motion.div
               key={i}
@@ -52,17 +66,19 @@ export function ProductStack() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="group relative bg-[#0a0f14] border border-white/10 rounded-2xl p-8 hover:border-electric/50 transition-colors duration-300 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+              whileHover={{ y: -8 }}
+              className="group relative bg-[#08080c] border border-white/5 rounded-3xl p-8 transition-all duration-300"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-electric/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none" />
+              {/* Hover glows */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#4f46e5]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none" />
+              <div className="absolute inset-0 border border-[#00c2ff]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none shadow-[0_0_20px_rgba(0,194,255,0.1)]" />
               
-              <div className="w-12 h-12 rounded-xl bg-panel border border-white/5 flex items-center justify-center mb-6 group-hover:bg-electric/10 group-hover:border-electric/30 transition-colors">
-                <p.icon className="w-6 h-6 text-white group-hover:text-electric transition-colors" />
+              <div className="w-14 h-14 rounded-2xl bg-[#0a0a10] border border-white/5 flex items-center justify-center mb-8 group-hover:bg-[#4f46e5]/20 group-hover:border-[#00c2ff]/40 transition-all duration-500 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+                <p.icon className="w-7 h-7 text-white/70 group-hover:text-[#00c2ff] transition-colors duration-500" />
               </div>
 
-              <h3 className="text-xl font-bold text-white mb-3">{p.title}</h3>
-              <p className="text-muted leading-relaxed">{p.description}</p>
+              <h3 className="text-xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 transition-colors uppercase tracking-wide text-sm">{p.title}</h3>
+              <p className="text-muted leading-relaxed font-light">{p.description}</p>
             </motion.div>
           ))}
         </div>

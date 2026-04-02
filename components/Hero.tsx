@@ -1,193 +1,218 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "./ui/Button";
-import { ArrowRight, Zap, Phone, BarChart } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+// Dynamically import react-globe.gl to prevent SSR window errors
+const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
 
 export function Hero() {
-  const [clicks, setClicks] = useState(0);
-  const [isPulsing, setIsPulsing] = useState(false);
-  const router = useRouter();
-  const MAX_CLICKS = 7;
+  const globeRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 600, height: 600 });
+  const [countries, setCountries] = useState({ features: [] });
+  const [gridTexture, setGridTexture] = useState("");
 
-  const handleNodeClick = () => {
-    const newClicks = Math.min(clicks + 1, MAX_CLICKS);
-    setClicks(newClicks);
+  useEffect(() => {
+    // Generate a sleek dark blue Latitude/Longitude Grid Texture dynamically
+    const canvas = document.createElement("canvas");
+    canvas.width = 2048;
+    canvas.height = 1024;
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      // Solid dark navy/black base representing deep water/space
+      ctx.fillStyle = "#020613";
+      ctx.fillRect(0, 0, 2048, 1024);
 
-    setIsPulsing(true);
-    setTimeout(() => setIsPulsing(false), 800);
+      // Dark blue tech grid lines
+      ctx.strokeStyle = "#081b3d"; 
+      ctx.lineWidth = 3;
 
-    if (newClicks >= MAX_CLICKS) {
-      setTimeout(() => {
-        router.push("/secret-discount");
-      }, 1000);
+      ctx.beginPath();
+      // Longitude lines
+      for (let i = 0; i <= 2048; i += 64) {
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, 1024);
+      }
+      // Latitude lines
+      for (let j = 0; j <= 1024; j += 64) {
+        ctx.moveTo(0, j);
+        ctx.lineTo(2048, j);
+      }
+      ctx.stroke();
+
+      // Equator highlight
+      ctx.strokeStyle = "#0c2b63";
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(0, 512);
+      ctx.lineTo(2048, 512);
+      ctx.stroke();
+
+      setGridTexture(canvas.toDataURL("image/jpeg", 0.8));
     }
-  };
+  }, []);
 
-  const peakScale = (clicks / MAX_CLICKS) * 2;
-  const currentScale = isPulsing ? peakScale : 0;
-  const currentOpacity = isPulsing ? 0.6 : 0;
+  useEffect(() => {
+    // Fetch GeoJSON for tech-style translucent polygon mapping
+    fetch("https://raw.githubusercontent.com/vasturiano/react-globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson")
+      .then((res) => res.json())
+      .then(setCountries)
+      .catch((err) => console.error("Error loading GeoJSON", err));
+  }, []);
+
+  useEffect(() => {
+    // Handle responsive mapping for the globe container
+    const handleResize = () => {
+      if (containerRef.current) {
+        setDimensions({
+          width: containerRef.current.offsetWidth,
+          height: containerRef.current.offsetWidth,
+        });
+      }
+    };
+
+    // Give layout time to settle
+    setTimeout(handleResize, 100);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    // Smooth auto-rotation config for react-globe.gl
+    if (globeRef.current) {
+      const controls = globeRef.current.controls();
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 0.8; // Smooth, energetic but clean rotation
+      controls.enableZoom = false; // Disable zoom to lock standard hero layout size
+      
+      // Initial realistic slight camera tilt
+      globeRef.current.pointOfView({ lat: 10, lng: -20, altitude: 2.2 });
+    }
+  }, [globeRef.current]);
+
+  // Tiny glowing data points mapping major tech hubs in brand colors (Blue/Purple)
+  const globeMarkers = [
+    { lat: 37.7749, lng: -122.4194, size: 0.1, color: "#00c2ff" }, // Cyan
+    { lat: 40.7128, lng: -74.0060, size: 0.1, color: "#4f46e5" }, // Indigo
+    { lat: 51.5074, lng: -0.1278, size: 0.1, color: "#a855f7" }, // Violet
+    { lat: 35.6895, lng: 139.6917, size: 0.1, color: "#00c2ff" }, // Cyan
+    { lat: 1.3521, lng: 103.8198, size: 0.1, color: "#4f46e5" }, // Indigo
+    { lat: -33.8688, lng: 151.2093, size: 0.1, color: "#a855f7" }, // Violet
+  ];
+
+  // Tech-style data arcs flying between active nodes
+  const arcsData = globeMarkers.map((marker, i) => {
+    const nextMarker = globeMarkers[(i + 1) % globeMarkers.length];
+    return {
+      startLat: marker.lat,
+      startLng: marker.lng,
+      endLat: nextMarker.lat,
+      endLng: nextMarker.lng,
+      color: [marker.color, nextMarker.color],
+    };
+  });
 
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-      {/* Dynamic Light Blue Flare Blooms */}
-      <div className="fixed inset-0 pointer-events-none z-[100] overflow-hidden mix-blend-screen">
-        <div 
-          className="absolute top-0 left-0 w-[50vw] h-[50vh] bg-[radial-gradient(ellipse_at_top_left,rgba(0,194,255,1)_0%,rgba(0,194,255,0.4)_40%,transparent_70%)] transition-all duration-1000 ease-in-out origin-top-left"
-          style={{ transform: `scale(${currentScale})`, opacity: currentOpacity }}
-        />
-        <div 
-          className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-[radial-gradient(ellipse_at_top_right,rgba(0,194,255,1)_0%,rgba(0,194,255,0.4)_40%,transparent_70%)] transition-all duration-1000 ease-in-out origin-top-right"
-          style={{ transform: `scale(${currentScale})`, opacity: currentOpacity }}
-        />
-        <div 
-          className="absolute bottom-0 left-0 w-[50vw] h-[50vh] bg-[radial-gradient(ellipse_at_bottom_left,rgba(0,194,255,1)_0%,rgba(0,194,255,0.4)_40%,transparent_70%)] transition-all duration-1000 ease-in-out origin-bottom-left"
-          style={{ transform: `scale(${currentScale})`, opacity: currentOpacity }}
-        />
-        <div 
-          className="absolute bottom-0 right-0 w-[50vw] h-[50vh] bg-[radial-gradient(ellipse_at_bottom_right,rgba(0,194,255,1)_0%,rgba(0,194,255,0.4)_40%,transparent_70%)] transition-all duration-1000 ease-in-out origin-bottom-right"
-          style={{ transform: `scale(${currentScale})`, opacity: currentOpacity }}
-        />
-      </div>
+    <section className="relative min-h-[100svh] flex items-center bg-[#030303] overflow-hidden pt-24 pb-16">
+      {/* Cinematic Ambient Background Glow blending the globe into space */}
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(0,194,255,0.06)_0%,transparent_60%)] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(79,70,229,0.08)_0%,transparent_60%)] blur-[100px] pointer-events-none" />
 
-      {/* Screen flash on fully overtake */}
-      <AnimatePresence>
-        {clicks >= MAX_CLICKS && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="fixed inset-0 bg-white z-[200] pointer-events-none mix-blend-screen"
-            transition={{ duration: 1 }}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Background Glows */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-electric/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-orange/5 rounded-full blur-[150px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center z-10 w-full mt-4">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center relative z-10 w-full">
         
-        {/* Left Content */}
-        <motion.div 
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex flex-col gap-8"
-        >
-          <h1 className="text-5xl md:text-7xl font-bold leading-[1.1] tracking-tight text-white">
-            Your Business Should Never Miss <span className="text-transparent bg-clip-text bg-gradient-to-r from-electric to-orange text-glow">Another Lead</span>
+        {/* LEFT SIDE: Premium Headline Content */}
+        <div className="flex flex-col gap-6 text-left max-w-2xl z-20 mt-10 lg:mt-0 pt-10">
+          <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-extrabold tracking-tight text-white leading-[1.05]">
+            Connect Globally. <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00c2ff] via-[#a855f7] to-[#4f46e5]">
+              Scale Effortlessly.
+            </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-muted leading-relaxed max-w-xl">
-            We build AI-powered growth systems that capture, qualify, and close leads automatically — 24/7.
+          <p className="text-lg md:text-xl text-[#8b9bb4] leading-relaxed max-w-xl font-light">
+            Power your business with intelligent systems that help you reach customers anywhere in the world.
           </p>
 
-          <ul className="flex flex-col gap-4 text-sm md:text-base font-medium">
-            {[
-              { text: "Instant AI call within 60 seconds", icon: Zap },
-              { text: "Never miss inbound calls again", icon: Phone },
-              { text: "Fully automated pipeline", icon: BarChart },
-            ].map((item, i) => (
-              <motion.li 
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + i * 0.1 }}
-                className="flex items-center gap-3 text-white"
-              >
-                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-electric/10 text-electric">
-                  <item.icon className="w-3.5 h-3.5" />
-                </div>
-                {item.text}
-              </motion.li>
-            ))}
-          </ul>
-
-          <div className="flex items-center gap-2 mt-6 mb-3 ml-1 text-sm font-medium text-electric">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-electric opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-electric"></span>
-            </span>
-            Only accepting 3 new clients this quarter
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 mt-6">
             <Link href="/book" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full gap-2">
-                Book a Call <ArrowRight className="w-4 h-4" />
-              </Button>
+              <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-black font-semibold hover:bg-gray-100 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] active:scale-95">
+                Get Started
+              </button>
             </Link>
             <Link href="/process" className="w-full sm:w-auto">
-              <Button variant="secondary" size="lg" className="w-full">
-                See How It Works
-              </Button>
+              <button className="w-full sm:w-auto px-8 py-4 rounded-full border border-white/20 text-white font-semibold hover:bg-white/5 hover:border-white/40 transition-all duration-300 backdrop-blur-sm active:scale-95">
+                Book a Demo
+              </button>
             </Link>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Right Content - Advanced 3D / Node visualization mockup */}
-        <motion.div
-           initial={{ opacity: 0, scale: 0.9 }}
-           animate={{ opacity: 1, scale: 1 }}
-           transition={{ duration: 1, delay: 0.2 }}
-           className="relative h-[600px] rounded-2xl border border-white/10 bg-panel/30 backdrop-blur-sm overflow-hidden flex items-center justify-center shadow-[0_0_50px_rgba(0,194,255,0.05)]"
+        {/* RIGHT SIDE: Holographic High-Contrast Brand Globe */}
+        <div 
+          ref={containerRef}
+          className="relative w-full aspect-square max-w-[700px] mx-auto flex items-center justify-center lg:order-last -order-1 group pb-10 lg:pb-0"
         >
-          {/* Faux Data Lines & Nodes Background */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,194,255,0.05)_0,transparent_100%)]" />
-          
-          {/* Grid pattern overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20" />
+          {/* Luminous Outer Glow behind Globe */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.15)_0%,transparent_60%)] pointer-events-none transition-opacity duration-1000 group-hover:opacity-80 scale-125" />
 
-          {/* Lines */}
-          <div className="absolute inset-x-0 top-1/2 h-[1px] bg-gradient-to-r from-transparent via-electric/30 to-transparent" />
-          <div className="absolute inset-y-0 left-1/2 w-[1px] bg-gradient-to-b from-transparent via-electric/30 to-transparent" />
-          <div className="absolute inset-x-0 top-1/3 h-[1px] bg-gradient-to-r from-transparent via-orange/20 to-transparent rotate-45 transform origin-center" />
-          <div className="absolute inset-x-0 top-1/3 h-[1px] bg-gradient-to-r from-transparent via-electric/20 to-transparent -rotate-45 transform origin-center" />
+          {/* Luminous Animated Orbit Rings */}
+          <div className="absolute top-1/2 left-1/2 w-[85%] h-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-t-[#00c2ff]/40 border-r-[#a855f7]/40 border-b-transparent border-l-transparent animate-[spin_12s_linear_infinite] pointer-events-none shadow-[0_0_20px_rgba(0,194,255,0.1)]" />
+          <div className="absolute top-1/2 left-1/2 w-[110%] h-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-b-[#4f46e5]/40 border-l-[#00c2ff]/30 border-t-transparent border-r-transparent animate-[spin_20s_linear_infinite_reverse] pointer-events-none shadow-[0_0_20px_rgba(79,70,229,0.15)]" />
+          <div className="absolute top-1/2 left-1/2 w-[130%] h-[130%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-r-[#a855f7]/20 border-t-[#00c2ff]/10 border-b-transparent border-l-transparent animate-[spin_30s_linear_infinite] pointer-events-none" />
 
-          {/* Central AI Node */}
-          <div 
-            onClick={handleNodeClick}
-            className={`relative z-10 w-44 h-44 flex items-center justify-center rounded-full border border-electric/40 bg-black/60 backdrop-blur-md shadow-[0_0_80px_rgba(0,194,255,0.3)] transition-all duration-300 ${isPulsing ? 'scale-90 brightness-150' : ''}`}
-          >
-            <div className={`absolute inset-0 rounded-full border border-orange/40 ${isPulsing ? 'animate-ping' : 'animate-[ping_3s_ease-in-out_infinite]'}`} />
-            
-            {/* Added details around node */}
-            <div className="absolute inset-[-20px] rounded-full border border-dashed border-electric/20 animate-[spin_10s_linear_infinite]" />
-            <div className="absolute inset-[-40px] rounded-full border-t border-r border-electric/10 animate-[spin_15s_linear_infinite_reverse]" />
-
-            <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-electric/90 via-electric/30 to-transparent flex items-center justify-center animate-[spin_4s_linear_infinite]">
-              <div className="absolute inset-1 rounded-full bg-[#0a0f14] flex items-center justify-center animate-[spin_4s_linear_infinite_reverse]">
-                 <Zap className={`w-10 h-10 text-electric transition-transform ${isPulsing ? 'scale-125' : ''}`} />
-              </div>
-            </div>
-            
-            {/* Click Count Energy Rings */}
-            {Array.from({ length: clicks }).map((_, i) => (
-              <motion.div 
-                key={i}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1 + i * 0.15, opacity: 0.8 - i * 0.1 }}
-                className="absolute inset-0 rounded-full border border-electric/50 pointer-events-none"
-              />
-            ))}
+          {/* Floating Glowing Particles */}
+          <div className="absolute inset-0 pointer-events-none">
+             <div className="absolute top-[20%] left-[20%] w-2 h-2 rounded-full bg-[#00c2ff] blur-[1px] shadow-[0_0_15px_#00c2ff] animate-[ping_4s_ease-in-out_infinite]" />
+             <div className="absolute bottom-[20%] right-[25%] w-1.5 h-1.5 rounded-full bg-[#4f46e5] blur-[1px] shadow-[0_0_15px_#4f46e5] animate-[ping_5s_ease-in-out_infinite_reverse]" />
+             <div className="absolute top-[60%] right-[10%] w-2.5 h-2.5 rounded-full bg-[#a855f7] blur-[1px] shadow-[0_0_20px_#a855f7] animate-[pulse_3s_ease-in-out_infinite]" />
+             <div className="absolute bottom-[30%] left-[10%] w-1 h-1 rounded-full bg-[#00c2ff] shadow-[0_0_10px_#00c2ff] animate-[pulse_6s_ease-in-out_infinite]" />
           </div>
-          
-          {/* Floating Data Pulses */}
-          <motion.div 
-            animate={{ x: [-200, 200], opacity: [0, 1, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="absolute top-1/2 left-1/2 w-4 h-4 bg-white/80 rounded-full shadow-[0_0_15px_#ffffff] -translate-y-1/2 blur-[1px]"
-          />
-          <motion.div 
-            animate={{ y: [-200, 200], opacity: [0, 1, 0] }}
-            transition={{ duration: 2.5, delay: 1, repeat: Infinity, ease: "linear" }}
-            className="absolute top-1/2 left-1/2 w-3 h-3 bg-electric rounded-full shadow-[0_0_15px_#00c2ff] -translate-x-1/2 blur-[1px]"
-          />
-        </motion.div>
+
+          <div className="relative w-[110%] h-[110%] sm:w-[100%] sm:h-[100%] flex items-center justify-center cursor-grab active:cursor-grabbing transform -rotate-[15deg] scale-110">
+            <Globe
+              ref={globeRef}
+              width={Math.min(dimensions.width, 700)}
+              height={Math.min(dimensions.width, 700)}
+              // Apply the custom generated dark blue grid texture to the ocean
+              globeImageUrl={gridTexture || undefined}
+              backgroundColor="rgba(0,0,0,0)"
+
+              // Bright Neon Rim Atmosphere (Indigo/Purple mix)
+              showAtmosphere={true}
+              atmosphereColor="#6366f1" 
+              atmosphereAltitude={0.2}
+
+              // 1. Tech Hologram Countries built from GeoJSON
+              polygonsData={countries.features}
+              polygonAltitude={0.015}
+              // Glossy brand cyan fill over landmasses
+              polygonCapColor={() => "rgba(0, 194, 255, 0.25)"} 
+              polygonSideColor={() => "rgba(168, 85, 247, 0.1)"}
+              // Vivid violet/purple neon borders outlining the earth
+              polygonStrokeColor={() => "#a855f7"} 
+
+              // 2. High-Tech Luminous Global Network Arcs
+              arcsData={arcsData}
+              arcStartLat="startLat"
+              arcStartLng="startLng"
+              arcEndLat="endLat"
+              arcEndLng="endLng"
+              arcColor="color"
+              arcDashLength={0.5}
+              arcDashGap={0.1}
+              arcDashAnimateTime={1500}
+              arcAltitudeAutoScale={0.4}
+
+              // 3. Glowing Location Hubs
+              pointsData={globeMarkers}
+              pointAltitude={0.03}
+              pointColor="color"
+              pointRadius="size"
+            />
+          </div>
+        </div>
       </div>
     </section>
   );
