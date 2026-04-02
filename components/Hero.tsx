@@ -80,17 +80,19 @@ export function Hero() {
   }, []);
 
   useEffect(() => {
-    // Smooth auto-rotation config for react-globe.gl
-    if (globeRef.current) {
-      const controls = globeRef.current.controls();
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 0.8; // Smooth, energetic but clean rotation
-      controls.enableZoom = false; // Disable zoom to lock standard hero layout size
-      
-      // Initial realistic slight camera tilt
-      globeRef.current.pointOfView({ lat: 10, lng: -20, altitude: 2.2 });
-    }
-  }, [globeRef.current]);
+    // Enforce rotation constantly to guarantee it "always rotates no matter what"
+    const interval = setInterval(() => {
+      if (globeRef.current) {
+        const controls = globeRef.current.controls();
+        if (controls) {
+          controls.autoRotate = true;
+          controls.autoRotateSpeed = 1.0; // Smoother, slightly faster speed
+          controls.enableZoom = false;
+        }
+      }
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   // Tiny glowing data points mapping major tech hubs in brand colors (Blue/Purple)
   const globeMarkers = [
@@ -170,7 +172,7 @@ export function Hero() {
              <div className="absolute bottom-[30%] left-[10%] w-1 h-1 rounded-full bg-[#00c2ff] shadow-[0_0_10px_#00c2ff] animate-[pulse_6s_ease-in-out_infinite]" />
           </div>
 
-          <div className="relative w-[110%] h-[110%] sm:w-[100%] sm:h-[100%] flex items-center justify-center cursor-grab active:cursor-grabbing transform -rotate-[15deg] scale-110">
+          <div className="relative w-[110%] h-[110%] sm:w-[100%] sm:h-[100%] flex items-center justify-center pointer-events-none transform -rotate-[15deg] scale-110">
             <Globe
               ref={globeRef}
               width={Math.min(dimensions.width, 700)}
@@ -184,14 +186,32 @@ export function Hero() {
               atmosphereColor="#6366f1" 
               atmosphereAltitude={0.2}
 
+              // Smoother Load Optimization
+              animateIn={false}
+              waitForGlobeReady={false}
+
+              // Fire onGlobeReady to initialize camera view properly
+              onGlobeReady={() => {
+                if (globeRef.current) {
+                  globeRef.current.pointOfView({ lat: 10, lng: -20, altitude: 2.2 });
+                  const controls = globeRef.current.controls();
+                  if (controls) {
+                    controls.autoRotate = true;
+                    controls.autoRotateSpeed = 1.0;
+                    controls.enableZoom = false;
+                  }
+                }
+              }}
+
               // 1. Tech Hologram Countries built from GeoJSON
               polygonsData={countries.features}
-              polygonAltitude={0.015}
+              polygonAltitude={0.005} // Lower altitude for massive performance boost
               // Glossy brand cyan fill over landmasses
               polygonCapColor={() => "rgba(0, 194, 255, 0.25)"} 
-              polygonSideColor={() => "rgba(168, 85, 247, 0.1)"}
+              polygonSideColor={() => "rgba(0, 0, 0, 0)"} // Transparent sides to eliminate 3D wall rendering
               // Vivid violet/purple neon borders outlining the earth
               polygonStrokeColor={() => "#a855f7"} 
+              polygonsTransitionDuration={0} // Prevents laggy transitions when data loads
 
               // 2. High-Tech Luminous Global Network Arcs
               arcsData={arcsData}
